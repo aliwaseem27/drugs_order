@@ -1,19 +1,18 @@
-import 'enums.dart';
+import 'package:isar/isar.dart';
 
+part 'drug.g.dart';
+
+@Collection()
 class Drug {
-  late int? id;
-  String name;
-  int quantity;
-  int minQuantity;
-  int maxQuantity;
-  Category category;
+  Id id = Isar.autoIncrement;
+
+  late String name;
+  late int amount;
+  int selectedAmount = 0;
 
   Drug({
-    this.id,
     required this.name,
-    required this.quantity,
-    required this.minQuantity,
-    required this.maxQuantity,
-    required this.category,
+    required this.amount,
+    this.selectedAmount = 0,
   });
 }

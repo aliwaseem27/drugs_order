@@ -50,7 +50,7 @@ class QuantityCustomizer extends StatelessWidget {
                 child: TextField(
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: drug.quantity.toString(),
+                    hintText: drug.amount.toString(),
                     hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(),
                   ),
                   keyboardType: TextInputType.number,

@@ -51,7 +51,7 @@ class DrugInfoTile extends StatelessWidget {
                     children: [
                       const Text("Qty: "),
                       Text(
-                        drug.quantity.toString(),
+                        drug.amount.toString(),
                       ),
                     ],
                   ),
