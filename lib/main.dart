@@ -1,10 +1,10 @@
-import 'package:drugs_order/screens/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'models/drug.dart';
+import "router_config.dart";
 
 late Isar isar;
 
@@ -28,14 +28,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const OrderScreen(),
+      routerConfig: router,
     );
   }
 }

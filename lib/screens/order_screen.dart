@@ -21,6 +21,9 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
     final selectedDrugs = ref.watch(selectedDrugsProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Make New Order"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: SingleChildScrollView(
