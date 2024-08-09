@@ -1,5 +1,5 @@
+import 'package:drugs_order/screens/order_history_screen.dart';
 import 'package:drugs_order/screens/order_screen.dart';
-import 'package:drugs_order/screens/show_order_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   final List<Widget> screens = [
-    ShowOrderScreen(),
+    OrderHistoryScreen(),
     OrderScreen(),
   ];
 

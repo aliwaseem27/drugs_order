@@ -1,3 +1,4 @@
+import 'package:drugs_order/models/drug_history_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
@@ -15,7 +16,7 @@ Future<void> main() async {
 
   if (Isar.instanceNames.isEmpty) {
     isar = await Isar.open(
-      [DrugSchema],
+      [DrugSchema, OrderHistorySchema, SelectedDrugSchema],
       directory: dir.path,
     );
   }

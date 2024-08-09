@@ -1,3 +1,4 @@
+import 'package:drugs_order/providers/drug_order_providers.dart';
 import 'package:drugs_order/providers/providers.dart';
 import 'package:drugs_order/utils/app_sizes.dart';
 import 'package:flutter/material.dart';
@@ -93,6 +94,15 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
                 },
                 loading: () => Center(child: CircularProgressIndicator()),
                 error: (error, stack) => Center(child: Text('Error: $error')),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // ref.read(drugOrderListProvider.notifier).addDrugOrder(DateTime.now(), selectedDrugs);
+                  if (selectedDrugs.isNotEmpty){
+                    ref.read(orderHistoryListProvider.notifier).addDrugOrder(DateTime.now(), selectedDrugs);
+                  }
+                },
+                child: const Text("Save Order"),
               ),
             ],
           ),
