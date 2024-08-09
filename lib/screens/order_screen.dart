@@ -7,11 +7,16 @@ import 'widgets/drug_info_tile.dart';
 import 'widgets/edit_quantity_button.dart';
 import 'widgets/quantity_customizer.dart';
 
-class OrderScreen extends ConsumerWidget {
+class OrderScreen extends ConsumerStatefulWidget {
   const OrderScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends ConsumerState<OrderScreen> {
+  @override
+  Widget build(BuildContext context) {
     final drugAsyncValue = ref.watch(drugListProvider);
     final selectedDrugs = ref.watch(selectedDrugsProvider);
 
@@ -22,7 +27,7 @@ class OrderScreen extends ConsumerWidget {
           child: Column(
             children: [
               drugAsyncValue.when(
-                data: (drugs){
+                data: (drugs) {
                   return ListView.separated(
                     shrinkWrap: true,
                     itemCount: drugs.length,
@@ -30,6 +35,7 @@ class OrderScreen extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       final drug = drugs[index];
                       final isSelected = selectedDrugs.contains(drug);
+                      var showQuantity = false;
 
                       return Container(
                         margin: const EdgeInsets.only(bottom: AppSizes.sm),
@@ -38,8 +44,8 @@ class OrderScreen extends ConsumerWidget {
                           children: [
                             // Drug Info Tile
                             GestureDetector(
-                              onTap: (){
-                                if (isSelected){
+                              onTap: () {
+                                if (isSelected) {
                                   ref.read(selectedDrugsProvider.notifier).removeDrug(drug);
                                 } else {
                                   ref.read(selectedDrugsProvider.notifier).addDrug(drug);
@@ -58,7 +64,12 @@ class OrderScreen extends ConsumerWidget {
                                     ),
                                     Expanded(
                                       child: EditQuantityButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          setState(() {
+                                            showQuantity = !showQuantity;
+                                            print("PRESSED $showQuantity");
+                                          });
+                                        },
                                       ),
                                     ),
                                   ],
@@ -67,7 +78,7 @@ class OrderScreen extends ConsumerWidget {
                             ),
 
                             // Quantity Customizer
-                            QuantityCustomizer(show: true, drug: drugs[index]),
+                            QuantityCustomizer(show: showQuantity, drug: drugs[index]),
                           ],
                         ),
                       );

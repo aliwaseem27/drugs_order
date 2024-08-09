@@ -12,9 +12,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final dir = await getApplicationDocumentsDirectory();
-  print("----------------------");
-  print(dir.path);
-  print("----------------------");
 
   if (Isar.instanceNames.isEmpty) {
     isar = await Isar.open(
