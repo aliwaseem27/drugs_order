@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/order_history_provider.dart';
+import '../utils/formatters.dart';
 
 class OrderHistoryScreen extends ConsumerWidget {
   const OrderHistoryScreen({super.key});
@@ -27,11 +28,11 @@ class OrderHistoryScreen extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   final order = drugOrderList[index];
                   return ExpansionTile(
-                    title: Text('Order Date: ${order.dateTime}'),
+                    title: Text('Order Date: ${Date.format(order.dateTime)}'),
                     children: order.drugs.map((drugInfo) {
                       return ListTile(
                         title: Text(drugInfo.drugName),
-                        subtitle: Text('Amount: ${drugInfo.selectedAmount}'),
+                        trailing: Text('Amount: ${drugInfo.selectedAmount}'),
                       );
                     }).toList(),
                   );

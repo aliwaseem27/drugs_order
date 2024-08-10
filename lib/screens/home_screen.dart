@@ -3,6 +3,8 @@ import 'package:drugs_order/utils/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../utils/formatters.dart';
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -25,7 +27,7 @@ class HomeScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Date: ${data.dateTime.toIso8601String()}",
+                          "Date: ${Date.format(data.dateTime)}",
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         ListView.builder(
@@ -47,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
                     return const Center(child: Text("No Orders yet"));
                   }
                 },
-                error: (_, __) {
+                error: (error, stacktrace) {
                   return const Center(child: Text("Something went wrong"));
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),

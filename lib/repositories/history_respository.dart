@@ -21,7 +21,7 @@ class HistoryRepository {
   }
 
   Future<List<OrderHistory>> loadDrugOrders() async {
-    return await isar.orderHistorys.where().findAll();
+    return await isar.orderHistorys.where().sortByDateTimeDesc().findAll();
   }
 
   Stream<OrderHistory?> getMostRecentOrder() {

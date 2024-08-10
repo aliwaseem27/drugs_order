@@ -1,3 +1,4 @@
+import 'package:drugs_order/utils/default_drugs.dart';
 import 'package:isar/isar.dart';
 
 import '../main.dart';
@@ -8,12 +9,7 @@ class DrugRepository {
     // Save predefined list of drugs if the database is empty
     final existingDrugs = await isar.drugs.where().findAll();
     if (existingDrugs.isEmpty) {
-      final predefinedDrugs = [
-        Drug(name: 'Aspirin', amount: 100),
-        Drug(name: 'Paracetamol', amount: 50),
-        Drug(name: 'Ibuprofen', amount: 200),
-        // Add more drugs as needed
-      ];
+      final predefinedDrugs = DefaultDrugs().getDefaultDrugs;
       await saveDrugs(predefinedDrugs);
     }
   }
