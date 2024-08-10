@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/drug.dart';
-import 'repository.dart';
+import '../repositories/drug_repository.dart';
 
 // Predefined list of drugs
 final drugRepositoryProvider = Provider<DrugRepository>((ref) {

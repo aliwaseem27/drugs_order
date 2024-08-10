@@ -1,36 +1,31 @@
-import 'package:drugs_order/models/drug_history_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:isar/isar.dart';
-import 'package:drugs_order/main.dart';
-
+import 'package:drugs_order/models/drug_history_model.dart';
 import '../models/drug.dart';
+import '../repositories/history_respository.dart';
+
+final historyRepositoryProvider = Provider<HistoryRepository>((ref) {
+  return HistoryRepository(); // Assuming 'isar' is initialized in the main.dart
+});
 
 final orderHistoryListProvider = StateNotifierProvider<DrugOrderListNotifier, List<OrderHistory>>((ref) {
-  return DrugOrderListNotifier();
+  final historyRepository = ref.watch(historyRepositoryProvider);
+  final orderHistoryList = DrugOrderListNotifier(historyRepository);
+  orderHistoryList.loadDrugOrders();
+  return orderHistoryList;
 });
 
 class DrugOrderListNotifier extends StateNotifier<List<OrderHistory>> {
-  DrugOrderListNotifier() : super([]);
+  final HistoryRepository _historyRepository;
+
+  DrugOrderListNotifier(this._historyRepository) : super([]);
 
   void addDrugOrder(DateTime dateTime, List<Drug> drugs) async {
-    final drugOrder = OrderHistory()..dateTime = dateTime;
-    final orderDrugsList = drugs
-        .map((drug) => SelectedDrug()
-          ..drugName = drug.name
-          ..selectedAmount = drug.amount)
-        .toList();
-
-    await isar.writeTxn(() async {
-      await isar.selectedDrugs.putAll(orderDrugsList);
-      await isar.orderHistorys.put(drugOrder);
-      drugOrder.drugs.addAll(orderDrugsList);
-      await drugOrder.drugs.save();
-      state = [...state, drugOrder];
-    });
+    await _historyRepository.addDrugOrder(dateTime, drugs);
+    loadDrugOrders();
   }
 
   void loadDrugOrders() async {
-    final orders = await isar.orderHistorys.where().findAll();
+    final orders = await _historyRepository.loadDrugOrders();
     state = orders;
   }
 

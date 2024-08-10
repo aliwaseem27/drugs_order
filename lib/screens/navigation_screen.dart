@@ -1,3 +1,4 @@
+import 'package:drugs_order/screens/home_screen.dart';
 import 'package:drugs_order/screens/order_history_screen.dart';
 import 'package:drugs_order/screens/new_order_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   final List<Widget> screens = [
+    HomeScreen(),
     OrderHistoryScreen(),
     NewOrderScreen(),
   ];
@@ -28,10 +30,15 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Scaffold(
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
         onTap: onTap,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
             label: "Order History",
           ),
           BottomNavigationBarItem(

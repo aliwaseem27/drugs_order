@@ -1,4 +1,4 @@
-import 'package:drugs_order/providers/providers.dart';
+import 'package:drugs_order/providers/drug_list_providers.dart';
 import 'package:drugs_order/utils/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
