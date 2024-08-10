@@ -4,7 +4,6 @@ import '../main.dart';
 import '../models/drug.dart';
 
 class HistoryRepository {
-
   Future<void> addDrugOrder(DateTime dateTime, List<Drug> drugs) async {
     final drugOrder = OrderHistory()..dateTime = dateTime;
     final orderDrugsList = drugs
@@ -23,6 +22,14 @@ class HistoryRepository {
 
   Future<List<OrderHistory>> loadDrugOrders() async {
     return await isar.orderHistorys.where().findAll();
+  }
+
+  Stream<OrderHistory?> getMostRecentOrder() {
+    return isar.orderHistorys
+        .where()
+        .sortByDateTimeDesc()
+        .watch(fireImmediately: true)
+        .map((orders) => orders.isNotEmpty ? orders.first : null);
   }
 
 // Additional methods for deleting or updating orders can be added here.
