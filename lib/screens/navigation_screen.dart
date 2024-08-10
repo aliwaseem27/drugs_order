@@ -1,5 +1,5 @@
 import 'package:drugs_order/screens/order_history_screen.dart';
-import 'package:drugs_order/screens/order_screen.dart';
+import 'package:drugs_order/screens/new_order_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -10,7 +10,6 @@ class NavigationScreen extends StatefulWidget {
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
-  @override
   int currentIndex = 0;
 
   void onTap(int index) {
@@ -21,9 +20,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   final List<Widget> screens = [
     OrderHistoryScreen(),
-    OrderScreen(),
+    NewOrderScreen(),
   ];
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: screens[currentIndex],
@@ -32,7 +32,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: "Home",
+            label: "Order History",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.note_add_outlined),

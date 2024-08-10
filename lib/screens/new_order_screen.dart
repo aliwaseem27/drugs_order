@@ -1,21 +1,21 @@
-import 'package:drugs_order/providers/drug_order_providers.dart';
 import 'package:drugs_order/providers/providers.dart';
 import 'package:drugs_order/utils/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/order_history_provider.dart';
 import 'widgets/drug_info_tile.dart';
 import 'widgets/edit_quantity_button.dart';
 import 'widgets/quantity_customizer.dart';
 
-class OrderScreen extends ConsumerStatefulWidget {
-  const OrderScreen({super.key});
+class NewOrderScreen extends ConsumerStatefulWidget {
+  const NewOrderScreen({super.key});
 
   @override
   ConsumerState createState() => _OrderScreenState();
 }
 
-class _OrderScreenState extends ConsumerState<OrderScreen> {
+class _OrderScreenState extends ConsumerState<NewOrderScreen> {
   @override
   Widget build(BuildContext context) {
     final drugAsyncValue = ref.watch(drugListProvider);
@@ -92,13 +92,13 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
                     },
                   );
                 },
-                loading: () => Center(child: CircularProgressIndicator()),
+                loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stack) => Center(child: Text('Error: $error')),
               ),
               ElevatedButton(
                 onPressed: () {
                   // ref.read(drugOrderListProvider.notifier).addDrugOrder(DateTime.now(), selectedDrugs);
-                  if (selectedDrugs.isNotEmpty){
+                  if (selectedDrugs.isNotEmpty) {
                     ref.read(orderHistoryListProvider.notifier).addDrugOrder(DateTime.now(), selectedDrugs);
                   }
                 },
