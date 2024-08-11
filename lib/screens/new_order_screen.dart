@@ -1,3 +1,4 @@
+import 'package:drugs_order/models/drug.dart';
 import 'package:drugs_order/providers/drug_list_providers.dart';
 import 'package:drugs_order/utils/app_sizes.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +21,81 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
   Widget build(BuildContext context) {
     final drugAsyncValue = ref.watch(drugListProvider);
     final selectedDrugs = ref.watch(selectedDrugsProvider);
+    final _formKey = GlobalKey<FormState>();
+    String? drugName;
+    int? drugAmount;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Make New Order"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Add New Drug'),
+                      content: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextFormField(
+                              decoration: InputDecoration(labelText: 'Name'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter drug name';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                drugName = value;
+                              },
+                            ),
+                            SizedBox(height: AppSizes.xs),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(labelText: 'Amount'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter drug amount';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                drugAmount = int.parse(value!);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Cancel')),
+                        TextButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+
+                                ref.read(drugListProvider.notifier).addDrug(
+                                      drugName: drugName!,
+                                      drugAmount: drugAmount ?? 1,
+                                    );
+                              }
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Add',
+                              style: TextStyle(color: Colors.green),
+                            )),
+                      ],
+                    );
+                  });
+            },
             icon: Icon(Icons.add_circle_outline),
           )
         ],
@@ -60,6 +129,36 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                                 } else {
                                   ref.read(selectedDrugsProvider.notifier).addDrug(drug);
                                 }
+                              },
+                              onLongPress: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                          title: Text('Delete ${drug.name}'),
+                                          content: Text('Are you sure you want to delete this drug?'),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text('Cancel')),
+                                            TextButton(
+                                                onPressed: () {
+                                                  ref.read(drugListProvider.notifier).removeDrug(drug);
+                                                  Navigator.pop(context);
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    SnackBar(
+                                                      content: Text("Drug Deleted Successfully"),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  'Delete',
+                                                  style: TextStyle(color: Colors.red),
+                                                ))
+                                          ]);
+                                    });
                               },
                               child: IntrinsicHeight(
                                 child: Row(
