@@ -30,10 +30,18 @@ class DrugOrderListNotifier extends StateNotifier<List<OrderHistory>> {
     state = orders;
   }
 
-// Additional methods for deleting or updating orders can be added here.
+  void deleteDrugOrder(OrderHistory order) async {
+    await _historyRepository.deleteDrugOrder(order);
+    loadDrugOrders();
+  }
+
+  void deleteAllOrderHistory() async{
+    await _historyRepository.deleteAllOrders();
+    state = [];
+  }
 }
 
-final mostRecentOrderProvider = StreamProvider<OrderHistory?>((ref)  {
+final mostRecentOrderProvider = StreamProvider<OrderHistory?>((ref) {
   final historyRepository = ref.watch(historyRepositoryProvider);
   return historyRepository.getMostRecentOrder();
 });

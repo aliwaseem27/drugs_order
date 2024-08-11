@@ -32,11 +32,13 @@ class HomeScreen extends ConsumerWidget {
                         ),
                         ListView.builder(
                           shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: data.drugs.length,
                           itemBuilder: (context, index) {
                             final drug = data.drugs.elementAt(index);
                             return Card(
                               child: ListTile(
+                                leading: Text(index.toString()),
                                 title: Text(drug.drugName),
                                 trailing: Text("Amount: ${drug.selectedAmount}"),
                               ),

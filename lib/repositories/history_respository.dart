@@ -32,5 +32,19 @@ class HistoryRepository {
         .map((orders) => orders.isNotEmpty ? orders.first : null);
   }
 
-// Additional methods for deleting or updating orders can be added here.
+  Future<void> deleteAllOrders() async {
+    await isar.writeTxn(() async {
+      await isar.orderHistorys.clear();
+      await isar.selectedDrugs.clear();
+    });
+  }
+
+  Future<void> deleteDrugOrder(OrderHistory order) async {
+    await isar.writeTxn(() async {
+      for (var selectedDrug in order.drugs) {
+        await isar.selectedDrugs.delete(selectedDrug.id);
+      }
+      await isar.orderHistorys.delete(order.id);
+    });
+  }
 }
