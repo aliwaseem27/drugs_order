@@ -1,4 +1,3 @@
-import 'package:drugs_order/providers/drug_list_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:drugs_order/models/drug_history_model.dart';
 import '../models/drug.dart';

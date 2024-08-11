@@ -1,4 +1,3 @@
-import 'package:drugs_order/models/drug.dart';
 import 'package:drugs_order/providers/drug_list_providers.dart';
 import 'package:drugs_order/utils/app_sizes.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,7 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
   Widget build(BuildContext context) {
     final drugAsyncValue = ref.watch(drugListProvider);
     final selectedDrugs = ref.watch(selectedDrugsProvider);
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     String? drugName;
     int? drugAmount;
 
@@ -35,14 +34,14 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text('Add New Drug'),
+                      title: const Text('Add New Drug'),
                       content: Form(
-                        key: _formKey,
+                        key: formKey,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             TextFormField(
-                              decoration: InputDecoration(labelText: 'Name'),
+                              decoration: const InputDecoration(labelText: 'Name'),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter drug name';
@@ -53,10 +52,10 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                                 drugName = value;
                               },
                             ),
-                            SizedBox(height: AppSizes.xs),
+                            const SizedBox(height: AppSizes.xs),
                             TextFormField(
                               keyboardType: TextInputType.number,
-                              decoration: InputDecoration(labelText: 'Amount'),
+                              decoration: const InputDecoration(labelText: 'Amount'),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter drug amount';
@@ -78,8 +77,8 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                             child: const Text('Cancel')),
                         TextButton(
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
+                              if (formKey.currentState!.validate()) {
+                                formKey.currentState!.save();
 
                                 ref.read(drugListProvider.notifier).addDrug(
                                       drugName: drugName!,
@@ -88,7 +87,7 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                               }
                               Navigator.of(context).pop();
                             },
-                            child: Text(
+                            child: const Text(
                               'Add',
                               style: TextStyle(color: Colors.green),
                             )),
@@ -96,7 +95,7 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                     );
                   });
             },
-            icon: Icon(Icons.add_circle_outline),
+            icon: const Icon(Icons.add_circle_outline),
           )
         ],
       ),
@@ -136,24 +135,24 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                                     builder: (context) {
                                       return AlertDialog(
                                           title: Text('Delete ${drug.name}'),
-                                          content: Text('Are you sure you want to delete this drug?'),
+                                          content: const Text('Are you sure you want to delete this drug?'),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: Text('Cancel')),
+                                                child: const Text('Cancel')),
                                             TextButton(
                                                 onPressed: () {
                                                   ref.read(drugListProvider.notifier).removeDrug(drug);
                                                   Navigator.pop(context);
                                                   ScaffoldMessenger.of(context).showSnackBar(
-                                                    SnackBar(
+                                                    const SnackBar(
                                                       content: Text("Drug Deleted Successfully"),
                                                     ),
                                                   );
                                                 },
-                                                child: Text(
+                                                child: const Text(
                                                   'Delete',
                                                   style: TextStyle(color: Colors.red),
                                                 ))
@@ -201,6 +200,9 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                 error: (error, stack) => Center(child: Text('Error: $error')),
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd)),
+                ),
                 onPressed: () {
                   showDialog(
                       context: context,
@@ -224,7 +226,7 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                                         .addDrugOrder(DateTime.now(), selectedDrugs);
                                     ref.read(selectedDrugsProvider.notifier).clearSelectedDrugs();
                                   }
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                     content: Text("Order Saved Successfully"),
                                   ));
                                   Navigator.pop(context);
@@ -235,6 +237,7 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                       });
                 },
                 child: const Text("Save Order"),
+
               ),
             ],
           ),

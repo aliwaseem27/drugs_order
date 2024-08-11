@@ -14,7 +14,7 @@ class OrderHistoryScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Drug Order History'),
+        title: const Text('Drug Order History'),
         actions: [
           IconButton(
             onPressed: () {
@@ -22,19 +22,19 @@ class OrderHistoryScreen extends ConsumerWidget {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text('Delete All Orders History'),
-                      content: Text('Are you sure you want to delete all history?'),
+                      title: const Text('Delete All Orders History'),
+                      content: const Text('Are you sure you want to delete all history?'),
                       actions: [
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text('Cancel'),
+                          child: const Text('Cancel'),
                         ),
                         TextButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text("Long Press to Delete History"),
                               ),
                             );
@@ -43,12 +43,12 @@ class OrderHistoryScreen extends ConsumerWidget {
                             ref.read(orderHistoryListProvider.notifier).deleteAllOrderHistory();
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text("History Deleted Successfully"),
                               ),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             'Delete',
                             style: TextStyle(color: Colors.red),
                           ),
@@ -57,7 +57,7 @@ class OrderHistoryScreen extends ConsumerWidget {
                     );
                   });
             },
-            icon: Icon(Icons.delete_forever_outlined),
+            icon: const Icon(Icons.delete_forever_outlined),
           ),
         ],
       ),
@@ -84,37 +84,38 @@ class OrderHistoryScreen extends ConsumerWidget {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                          title: Text('Delete Order History'),
-                                          content: Text('Are you sure you want to delete this history?'),
+                                          title: const Text('Delete Order History'),
+                                          content: const Text('Are you sure you want to delete this history?'),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: Text('Cancel')),
+                                                child: const Text('Cancel')),
                                             TextButton(
                                                 onPressed: () {
                                                   ref.read(orderHistoryListProvider.notifier).deleteDrugOrder(order);
                                                   Navigator.pop(context);
                                                   ScaffoldMessenger.of(context).showSnackBar(
-                                                    SnackBar(
+                                                    const SnackBar(
                                                       content: Text("History Deleted Successfully"),
                                                     ),
                                                   );
                                                 },
-                                                child: Text(
+                                                child: const Text(
                                                   'Delete',
                                                   style: TextStyle(color: Colors.red),
                                                 ))
                                           ]);
                                     });
                               },
-                              icon: Icon(Icons.remove_circle_outline))
+                              icon: const Icon(Icons.remove_circle_outline))
                         ],
                       ),
                       children: order.drugs.map((drugInfo) {
                         return ListTile(
-                          title: Text(drugInfo.drugName),
+                          dense: true,
+                          title: Text(drugInfo.drugName, style: Theme.of(context).textTheme.titleMedium,),
                           trailing: Text('Amount: ${drugInfo.selectedAmount}'),
                         );
                       }).toList(),

@@ -20,9 +20,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   final List<Widget> screens = [
-    HomeScreen(),
-    OrderHistoryScreen(),
-    NewOrderScreen(),
+    const HomeScreen(),
+    const OrderHistoryScreen(),
+    const NewOrderScreen(),
   ];
 
   @override
@@ -32,7 +32,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: onTap,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             label: "Home",

@@ -13,10 +13,10 @@ class HomeScreen extends ConsumerWidget {
     final mostRecentOrder = ref.watch(mostRecentOrderProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your latest Order"),
+        title: const Text("Your latest Order"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(AppSizes.defaultSpace),
+        padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -38,8 +38,12 @@ class HomeScreen extends ConsumerWidget {
                             final drug = data.drugs.elementAt(index);
                             return Card(
                               child: ListTile(
+                                dense: true,
                                 leading: Text(index.toString()),
-                                title: Text(drug.drugName),
+                                title: Text(
+                                  drug.drugName,
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
                                 trailing: Text("Amount: ${drug.selectedAmount}"),
                               ),
                             );

@@ -35,9 +35,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(
-
-        ),
       ),
       routerConfig: router,
     );

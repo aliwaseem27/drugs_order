@@ -1,7 +1,6 @@
 import 'package:drugs_order/screens/navigation_screen.dart';
 import 'package:go_router/go_router.dart';
 
-import 'screens/new_order_screen.dart';
 
 final router = GoRouter(
   routes: [
