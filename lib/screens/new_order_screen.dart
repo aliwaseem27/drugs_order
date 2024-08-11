@@ -24,6 +24,12 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Make New Order"),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.add_circle_outline),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
@@ -119,6 +125,9 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                                         .addDrugOrder(DateTime.now(), selectedDrugs);
                                     ref.read(selectedDrugsProvider.notifier).clearSelectedDrugs();
                                   }
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text("Order Saved Successfully"),
+                                  ));
                                   Navigator.pop(context);
                                 },
                                 child: const Text("Yes")),

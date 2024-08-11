@@ -5,15 +5,44 @@ import '../repositories/drug_repository.dart';
 
 final drugRepositoryProvider = Provider<DrugRepository>((ref) {
   final drugRepository = DrugRepository();
-  drugRepository.init();
   return drugRepository;
 });
 
 // Provider for the list of drugs
-final drugListProvider = FutureProvider<List<Drug>>((ref) async {
+
+final drugListProvider = StateNotifierProvider<DrugListNotifier, AsyncValue<List<Drug>>>((ref) {
   final repository = ref.watch(drugRepositoryProvider);
-  return await repository.getDrugs();
+  final drugNotifier = DrugListNotifier(repository);
+  drugNotifier.loadDrugs();
+  return drugNotifier;
 });
+
+class DrugListNotifier extends StateNotifier<AsyncValue<List<Drug>>> {
+  DrugListNotifier(this.repository) : super(const AsyncValue.loading());
+
+  final DrugRepository repository;
+
+  void loadDrugs() async {
+    try {
+      state = const AsyncValue.loading();
+      await repository.init();
+      final drugs = await repository.getDrugs();
+      state = AsyncValue.data(drugs);
+    } catch (error) {
+      state = AsyncValue.error(error, StackTrace.current);
+    }
+  }
+
+  void addDrug(Drug drug) async {
+    await repository.addDrug(drug);
+    state = AsyncValue.data([...state.value!, drug]);
+  }
+
+  void removeDrug(Drug drug) async {
+    await repository.removeDrug(drug);
+    state = AsyncValue.data(state.value!.where((d) => d.name != drug.name).toList());
+  }
+}
 
 // Provider for selected drugs
 final selectedDrugsProvider = StateNotifierProvider<SelectedDrugsNotifier, List<Drug>>((ref) {

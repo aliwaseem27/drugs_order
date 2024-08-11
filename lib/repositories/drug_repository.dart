@@ -24,4 +24,16 @@ class DrugRepository {
   Future<List<Drug>> getDrugs() async {
     return await isar.drugs.where().findAll();
   }
+
+  Future<void> addDrug(Drug drug) async {
+    await isar.writeTxn(() async {
+      await isar.drugs.put(drug);
+    });
+  }
+
+  Future<void> removeDrug(Drug drug) async {
+    await isar.writeTxn(() async {
+      await isar.drugs.delete(drug.id);
+    });
+  }
 }
