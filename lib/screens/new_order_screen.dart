@@ -97,10 +97,34 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // ref.read(drugOrderListProvider.notifier).addDrugOrder(DateTime.now(), selectedDrugs);
-                  if (selectedDrugs.isNotEmpty) {
-                    ref.read(orderHistoryListProvider.notifier).addDrugOrder(DateTime.now(), selectedDrugs);
-                  }
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: Text(
+                            "Are you sure you want to save this order?",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("No")),
+                            TextButton(
+                                onPressed: () {
+                                  if (selectedDrugs.isNotEmpty) {
+                                    ref
+                                        .read(orderHistoryListProvider.notifier)
+                                        .addDrugOrder(DateTime.now(), selectedDrugs);
+                                    ref.read(selectedDrugsProvider.notifier).clearSelectedDrugs();
+                                  }
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Yes")),
+                          ],
+                        );
+                      });
                 },
                 child: const Text("Save Order"),
               ),

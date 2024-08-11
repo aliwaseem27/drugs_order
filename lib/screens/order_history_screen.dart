@@ -27,14 +27,16 @@ class OrderHistoryScreen extends ConsumerWidget {
                 itemCount: drugOrderList.length,
                 itemBuilder: (context, index) {
                   final order = drugOrderList[index];
-                  return ExpansionTile(
-                    title: Text('Order Date: ${Date.format(order.dateTime)}'),
-                    children: order.drugs.map((drugInfo) {
-                      return ListTile(
-                        title: Text(drugInfo.drugName),
-                        trailing: Text('Amount: ${drugInfo.selectedAmount}'),
-                      );
-                    }).toList(),
+                  return Card(
+                    child: ExpansionTile(
+                      title: Text('Order Date: ${Date.format(order.dateTime)}'),
+                      children: order.drugs.map((drugInfo) {
+                        return ListTile(
+                          title: Text(drugInfo.drugName),
+                          trailing: Text('Amount: ${drugInfo.selectedAmount}'),
+                        );
+                      }).toList(),
+                    ),
                   );
                 },
               ),

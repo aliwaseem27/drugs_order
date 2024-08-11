@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/drug.dart';
 import '../repositories/drug_repository.dart';
 
-// Predefined list of drugs
 final drugRepositoryProvider = Provider<DrugRepository>((ref) {
   final drugRepository = DrugRepository();
   drugRepository.init();
@@ -30,5 +29,9 @@ class SelectedDrugsNotifier extends StateNotifier<List<Drug>> {
 
   void removeDrug(Drug drug) {
     state = state.where((d) => d.name != drug.name).toList();
+  }
+
+  void clearSelectedDrugs() {
+    state = [];
   }
 }
