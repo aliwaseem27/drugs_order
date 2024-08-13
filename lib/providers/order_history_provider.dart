@@ -34,7 +34,7 @@ class DrugOrderListNotifier extends StateNotifier<List<OrderHistory>> {
     loadDrugOrders();
   }
 
-  void deleteAllOrderHistory() async{
+  void deleteAllOrderHistory() async {
     await _historyRepository.deleteAllOrders();
     state = [];
   }

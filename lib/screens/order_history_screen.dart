@@ -115,7 +115,10 @@ class OrderHistoryScreen extends ConsumerWidget {
                       children: order.drugs.map((drugInfo) {
                         return ListTile(
                           dense: true,
-                          title: Text(drugInfo.drugName, style: Theme.of(context).textTheme.titleMedium,),
+                          title: Text(
+                            drugInfo.drugName,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                           trailing: Text('Amount: ${drugInfo.selectedAmount}'),
                         );
                       }).toList(),

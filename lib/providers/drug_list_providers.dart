@@ -33,7 +33,7 @@ class DrugListNotifier extends StateNotifier<AsyncValue<List<Drug>>> {
     }
   }
 
-  void addDrug({required String drugName, required int drugAmount }) async {
+  void addDrug({required String drugName, required int drugAmount}) async {
     final newDrug = Drug(name: drugName, amount: drugAmount);
     await repository.addDrug(newDrug);
     state = AsyncValue.data([...state.value!, newDrug]);

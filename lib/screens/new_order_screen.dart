@@ -237,7 +237,6 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                       });
                 },
                 child: const Text("Save Order"),
-
               ),
             ],
           ),

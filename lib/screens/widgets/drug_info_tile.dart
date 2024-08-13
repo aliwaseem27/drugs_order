@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import '../../models/drug.dart';
 import '../../utils/app_sizes.dart';
 
-
 class DrugInfoTile extends StatelessWidget {
   const DrugInfoTile({
     super.key,
-    required this.drug, this.isSelected = false,
+    required this.drug,
+    this.isSelected = false,
   });
 
   final Drug drug;
-  final bool isSelected ;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
