@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 
 part 'drug.g.dart';
+// TODO: Add min, max, category info.
 
 @Collection()
 class Drug {
