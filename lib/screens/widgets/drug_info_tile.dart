@@ -53,13 +53,12 @@ class DrugInfoTile extends StatelessWidget {
                       ? Consumer(
                           builder: (BuildContext context, WidgetRef ref, Widget? child) {
                             var amount = ref.watch(selectedDrugsProvider.notifier).getDrugAmount(drug);
-                            return Row(
-                              children: [
-                                const Text("Qty: "),
-                                Text(
-                                  amount.toString(),
-                                ),
-                              ],
+                            return Text(
+                              amount.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold, color: Colors.cyan),
                             );
                           },
                         )

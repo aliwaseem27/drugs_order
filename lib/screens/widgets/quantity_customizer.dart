@@ -33,8 +33,14 @@ class _QuantityCustomizerState extends ConsumerState<QuantityCustomizer> {
     });
   }
 
+  late double minAmount;
+  late double maxAmount;
+  final numController = TextEditingController();
+
   @override
   void initState() {
+    minAmount = widget.drug.minAmount.toDouble();
+    maxAmount = widget.drug.maxAmount?.toDouble() ?? 100;
     amount = widget.drug.amount.toDouble();
     super.initState();
   }
@@ -66,10 +72,11 @@ class _QuantityCustomizerState extends ConsumerState<QuantityCustomizer> {
               Expanded(
                 flex: 5,
                 child: Slider(
+                  activeColor: Colors.cyan,
                   divisions: 10,
                   value: amount,
-                  min: widget.drug.minAmount.toDouble(),
-                  max: widget.drug.maxAmount?.toDouble() ?? 100,
+                  min: minAmount,
+                  max: maxAmount,
                   onChanged: (value) {
                     setState(() {
                       amount = value;
@@ -81,12 +88,29 @@ class _QuantityCustomizerState extends ConsumerState<QuantityCustomizer> {
               const VerticalDivider(),
               Expanded(
                 child: TextField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  showCursor: false,
+                  controller: numController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: amount.toInt().toString(),
                     hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(),
                   ),
-                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    var input = double.tryParse(value);
+                    if (input != null && input <= maxAmount && input >= minAmount) {
+                      setState(() {
+                        amount = input.toDouble();
+                      });
+                      _onChangedDebounced();
+                    } else {
+                      numController.clear();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Invalid Amount")),
+                      );
+                    }
+                  },
                 ),
               ),
             ],
