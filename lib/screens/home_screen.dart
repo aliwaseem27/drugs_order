@@ -14,6 +14,13 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your latest Order"),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.info_outline_rounded),
+            tooltip: "About Us",
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),

@@ -96,7 +96,13 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                   });
             },
             icon: const Icon(Icons.add_circle_outline),
-          )
+            tooltip: "Add New Drug",
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.check_circle_outline),
+            tooltip: "Unselect All",
+          ),
         ],
       ),
       body: Padding(

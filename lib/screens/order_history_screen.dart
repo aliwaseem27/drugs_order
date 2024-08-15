@@ -58,6 +58,7 @@ class OrderHistoryScreen extends ConsumerWidget {
                   });
             },
             icon: const Icon(Icons.delete_forever_outlined),
+            tooltip: "Delete All Orders History",
           ),
         ],
       ),
