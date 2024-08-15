@@ -1,9 +1,13 @@
+import 'dart:async';
+
+import 'package:drugs_order/providers/drug_list_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/drug.dart';
 import '../../utils/app_sizes.dart';
 
-class QuantityCustomizer extends StatelessWidget {
+class QuantityCustomizer extends ConsumerStatefulWidget {
   const QuantityCustomizer({
     super.key,
     required this.show,
@@ -14,11 +18,32 @@ class QuantityCustomizer extends StatelessWidget {
   final Drug drug;
 
   @override
+  ConsumerState<QuantityCustomizer> createState() => _QuantityCustomizerState();
+}
+
+class _QuantityCustomizerState extends ConsumerState<QuantityCustomizer> {
+  late double amount;
+  Timer? _debounce;
+
+  void _onChangedDebounced() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      ref.read(selectedDrugsProvider.notifier).updateDrugAmount(widget.drug, amount.toInt());
+      print(amount);
+    });
+  }
+
+  @override
+  void initState() {
+    amount = widget.drug.amount.toDouble();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: show,
+      visible: widget.show,
       child: Container(
-        // height: 40,
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -41,8 +66,15 @@ class QuantityCustomizer extends StatelessWidget {
               Expanded(
                 flex: 5,
                 child: Slider(
-                  value: 0.5,
-                  onChanged: (value) {},
+                  value: amount,
+                  min: widget.drug.minAmount.toDouble(),
+                  max: widget.drug.maxAmount?.toDouble() ?? 100,
+                  onChanged: (value) {
+                    setState(() {
+                      amount = value;
+                    });
+                    _onChangedDebounced();
+                  },
                 ),
               ),
               const VerticalDivider(),
@@ -50,7 +82,7 @@ class QuantityCustomizer extends StatelessWidget {
                 child: TextField(
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: drug.amount.toString(),
+                    hintText: widget.drug.amount.toString(),
                     hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(),
                   ),
                   keyboardType: TextInputType.number,

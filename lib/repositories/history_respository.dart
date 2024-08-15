@@ -6,6 +6,7 @@ import '../models/drug.dart';
 class HistoryRepository {
   Future<void> addDrugOrder(DateTime dateTime, List<Drug> drugs) async {
     final drugOrder = OrderHistory()..dateTime = dateTime;
+    // TODO: Change the drug.amount to drug.selectedAmount
     final orderDrugsList = drugs
         .map((drug) => SelectedDrug()
           ..drugName = drug.name

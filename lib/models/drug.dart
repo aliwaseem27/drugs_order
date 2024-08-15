@@ -9,11 +9,29 @@ class Drug {
 
   late String name;
   late int amount;
-  int selectedAmount = 0;
+  late int minAmount;
+  int? maxAmount;
 
   Drug({
     required this.name,
     required this.amount,
-    this.selectedAmount = 0,
-  });
+    this.minAmount = 1,
+    int? maxAmount,
+  }) : maxAmount = maxAmount ?? amount * 10;
+
+  Drug copyWith({String? name, int? amount}) {
+    return Drug(
+      name: name ?? this.name,
+      amount: amount ?? this.amount,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Drug && other.name == name;
+  }
+
+  @override
+  int get hashCode => name.hashCode;
 }

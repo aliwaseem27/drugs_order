@@ -22,15 +22,25 @@ const DrugSchema = CollectionSchema(
       name: r'amount',
       type: IsarType.long,
     ),
-    r'name': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 1,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'maxAmount': PropertySchema(
+      id: 2,
+      name: r'maxAmount',
+      type: IsarType.long,
+    ),
+    r'minAmount': PropertySchema(
+      id: 3,
+      name: r'minAmount',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 4,
       name: r'name',
       type: IsarType.string,
-    ),
-    r'selectedAmount': PropertySchema(
-      id: 2,
-      name: r'selectedAmount',
-      type: IsarType.long,
     )
   },
   estimateSize: _drugEstimateSize,
@@ -64,8 +74,10 @@ void _drugSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.amount);
-  writer.writeString(offsets[1], object.name);
-  writer.writeLong(offsets[2], object.selectedAmount);
+  writer.writeLong(offsets[1], object.hashCode);
+  writer.writeLong(offsets[2], object.maxAmount);
+  writer.writeLong(offsets[3], object.minAmount);
+  writer.writeString(offsets[4], object.name);
 }
 
 Drug _drugDeserialize(
@@ -76,8 +88,9 @@ Drug _drugDeserialize(
 ) {
   final object = Drug(
     amount: reader.readLong(offsets[0]),
-    name: reader.readString(offsets[1]),
-    selectedAmount: reader.readLongOrNull(offsets[2]) ?? 0,
+    maxAmount: reader.readLongOrNull(offsets[2]),
+    minAmount: reader.readLongOrNull(offsets[3]) ?? 1,
+    name: reader.readString(offsets[4]),
   );
   object.id = id;
   return object;
@@ -93,9 +106,13 @@ P _drugDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readLongOrNull(offset) ?? 0) as P;
+      return (reader.readLongOrNull(offset)) as P;
+    case 3:
+      return (reader.readLongOrNull(offset) ?? 1) as P;
+    case 4:
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -241,6 +258,58 @@ extension DrugQueryFilter on QueryBuilder<Drug, Drug, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> hashCodeEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Drug, Drug, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -285,6 +354,126 @@ extension DrugQueryFilter on QueryBuilder<Drug, Drug, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> maxAmountIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'maxAmount',
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> maxAmountIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'maxAmount',
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> maxAmountEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'maxAmount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> maxAmountGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'maxAmount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> maxAmountLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'maxAmount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> maxAmountBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'maxAmount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> minAmountEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'minAmount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> minAmountGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'minAmount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> minAmountLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'minAmount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterFilterCondition> minAmountBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'minAmount',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -420,59 +609,6 @@ extension DrugQueryFilter on QueryBuilder<Drug, Drug, QFilterCondition> {
       ));
     });
   }
-
-  QueryBuilder<Drug, Drug, QAfterFilterCondition> selectedAmountEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'selectedAmount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Drug, Drug, QAfterFilterCondition> selectedAmountGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'selectedAmount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Drug, Drug, QAfterFilterCondition> selectedAmountLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'selectedAmount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Drug, Drug, QAfterFilterCondition> selectedAmountBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'selectedAmount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
 }
 
 extension DrugQueryObject on QueryBuilder<Drug, Drug, QFilterCondition> {}
@@ -492,6 +628,42 @@ extension DrugQuerySortBy on QueryBuilder<Drug, Drug, QSortBy> {
     });
   }
 
+  QueryBuilder<Drug, Drug, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> sortByMaxAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxAmount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> sortByMaxAmountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxAmount', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> sortByMinAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'minAmount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> sortByMinAmountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'minAmount', Sort.desc);
+    });
+  }
+
   QueryBuilder<Drug, Drug, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -501,18 +673,6 @@ extension DrugQuerySortBy on QueryBuilder<Drug, Drug, QSortBy> {
   QueryBuilder<Drug, Drug, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Drug, Drug, QAfterSortBy> sortBySelectedAmount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'selectedAmount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Drug, Drug, QAfterSortBy> sortBySelectedAmountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'selectedAmount', Sort.desc);
     });
   }
 }
@@ -530,6 +690,18 @@ extension DrugQuerySortThenBy on QueryBuilder<Drug, Drug, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Drug, Drug, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<Drug, Drug, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -539,6 +711,30 @@ extension DrugQuerySortThenBy on QueryBuilder<Drug, Drug, QSortThenBy> {
   QueryBuilder<Drug, Drug, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> thenByMaxAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxAmount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> thenByMaxAmountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxAmount', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> thenByMinAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'minAmount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QAfterSortBy> thenByMinAmountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'minAmount', Sort.desc);
     });
   }
 
@@ -553,18 +749,6 @@ extension DrugQuerySortThenBy on QueryBuilder<Drug, Drug, QSortThenBy> {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
-
-  QueryBuilder<Drug, Drug, QAfterSortBy> thenBySelectedAmount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'selectedAmount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Drug, Drug, QAfterSortBy> thenBySelectedAmountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'selectedAmount', Sort.desc);
-    });
-  }
 }
 
 extension DrugQueryWhereDistinct on QueryBuilder<Drug, Drug, QDistinct> {
@@ -574,16 +758,28 @@ extension DrugQueryWhereDistinct on QueryBuilder<Drug, Drug, QDistinct> {
     });
   }
 
+  QueryBuilder<Drug, Drug, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QDistinct> distinctByMaxAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'maxAmount');
+    });
+  }
+
+  QueryBuilder<Drug, Drug, QDistinct> distinctByMinAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'minAmount');
+    });
+  }
+
   QueryBuilder<Drug, Drug, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<Drug, Drug, QDistinct> distinctBySelectedAmount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'selectedAmount');
     });
   }
 }
@@ -601,15 +797,27 @@ extension DrugQueryProperty on QueryBuilder<Drug, Drug, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Drug, String, QQueryOperations> nameProperty() {
+  QueryBuilder<Drug, int, QQueryOperations> hashCodeProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'name');
+      return query.addPropertyName(r'hashCode');
     });
   }
 
-  QueryBuilder<Drug, int, QQueryOperations> selectedAmountProperty() {
+  QueryBuilder<Drug, int?, QQueryOperations> maxAmountProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'selectedAmount');
+      return query.addPropertyName(r'maxAmount');
+    });
+  }
+
+  QueryBuilder<Drug, int, QQueryOperations> minAmountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'minAmount');
+    });
+  }
+
+  QueryBuilder<Drug, String, QQueryOperations> nameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'name');
     });
   }
 }

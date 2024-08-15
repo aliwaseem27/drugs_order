@@ -1,7 +1,9 @@
 import 'package:drugs_order/providers/order_history_provider.dart';
+import 'package:drugs_order/screens/about_us_screen.dart';
 import 'package:drugs_order/utils/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../utils/formatters.dart';
 
@@ -16,8 +18,10 @@ class HomeScreen extends ConsumerWidget {
         title: const Text("Your latest Order"),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.info_outline_rounded),
+            onPressed: () {
+              context.push(AboutUsScreen.routeName);
+            },
+            icon: const Icon(Icons.info_outline_rounded),
             tooltip: "About Us",
           ),
         ],

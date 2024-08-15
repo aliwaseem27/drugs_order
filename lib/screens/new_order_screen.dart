@@ -16,6 +16,8 @@ class NewOrderScreen extends ConsumerStatefulWidget {
 }
 
 class _OrderScreenState extends ConsumerState<NewOrderScreen> {
+  int? showQuantity;
+
   @override
   Widget build(BuildContext context) {
     final drugAsyncValue = ref.watch(drugListProvider);
@@ -76,21 +78,22 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                             },
                             child: const Text('Cancel')),
                         TextButton(
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                formKey.currentState!.save();
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
 
-                                ref.read(drugListProvider.notifier).addDrug(
-                                      drugName: drugName!,
-                                      drugAmount: drugAmount ?? 1,
-                                    );
-                              }
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text(
-                              'Add',
-                              style: TextStyle(color: Colors.green),
-                            )),
+                              ref.read(drugListProvider.notifier).addDrug(
+                                    drugName: drugName!,
+                                    drugAmount: drugAmount ?? 1,
+                                  );
+                            }
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            'Add',
+                            style: TextStyle(color: Colors.green),
+                          ),
+                        ),
                       ],
                     );
                   });
@@ -99,7 +102,9 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
             tooltip: "Add New Drug",
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              ref.read(selectedDrugsProvider.notifier).clearSelectedDrugs();
+            },
             icon: const Icon(Icons.check_circle_outline),
             tooltip: "Unselect All",
           ),
@@ -119,7 +124,6 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                     itemBuilder: (context, index) {
                       final drug = drugs[index];
                       final isSelected = selectedDrugs.contains(drug);
-                      var showQuantity = false;
 
                       return Container(
                         margin: const EdgeInsets.only(bottom: AppSizes.sm),
@@ -179,10 +183,16 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                                     Expanded(
                                       child: EditQuantityButton(
                                         onPressed: () {
-                                          setState(() {
-                                            showQuantity = !showQuantity;
-                                            print("PRESSED $showQuantity");
-                                          });
+                                          if (showQuantity == index) {
+                                            setState(() {
+                                              showQuantity = null;
+                                            });
+                                          } else {
+                                            setState(() {
+                                              showQuantity = index;
+                                            });
+                                          }
+                                          print("PRESSED $showQuantity");
                                         },
                                       ),
                                     ),
@@ -192,7 +202,7 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                             ),
 
                             // Quantity Customizer
-                            QuantityCustomizer(show: showQuantity, drug: drugs[index]),
+                            QuantityCustomizer(show: showQuantity == index, drug: drugs[index]),
                           ],
                         ),
                       );

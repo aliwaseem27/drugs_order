@@ -54,11 +54,39 @@ class SelectedDrugsNotifier extends StateNotifier<List<Drug>> {
   SelectedDrugsNotifier() : super([]);
 
   void addDrug(Drug drug) {
-    state = [...state, drug];
+    final existingDrugIndex = state.indexOf(drug);
+
+    if (existingDrugIndex != -1) {
+      final existingDrug = state[existingDrugIndex];
+      final updatedDrug = existingDrug.copyWith(amount: existingDrug.amount);
+
+      state = [
+        ...state.sublist(0, existingDrugIndex),
+        updatedDrug,
+        ...state.sublist(existingDrugIndex + 1),
+      ];
+    } else {
+      state = [...state, drug];
+    }
+  }
+
+  void updateDrugAmount(Drug drug, int newAmount) {
+    final existingDrugIndex = state.indexOf(drug);
+
+    if (existingDrugIndex != -1) {
+      final existingDrug = state[existingDrugIndex];
+      final updatedDrug = existingDrug.copyWith(amount: newAmount);
+
+      state = [
+        ...state.sublist(0, existingDrugIndex),
+        updatedDrug,
+        ...state.sublist(existingDrugIndex + 1),
+      ];
+    }
   }
 
   void removeDrug(Drug drug) {
-    state = state.where((d) => d.name != drug.name).toList();
+    state = state.where((d) => d == drug).toList();
   }
 
   void clearSelectedDrugs() {

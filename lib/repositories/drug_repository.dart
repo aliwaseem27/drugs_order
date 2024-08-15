@@ -7,7 +7,7 @@ import '../models/drug.dart';
 class DrugRepository {
   Future<void> init() async {
     // Save predefined list of drugs if the database is empty
-    final existingDrugs = await isar.drugs.where().findAll();
+    final existingDrugs = await getDrugs();
     if (existingDrugs.isEmpty) {
       final predefinedDrugs = DefaultDrugs().getDefaultDrugs;
       await saveDrugs(predefinedDrugs);
