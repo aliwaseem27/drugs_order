@@ -82,14 +82,21 @@ class SelectedDrugsNotifier extends StateNotifier<List<Drug>> {
         updatedDrug,
         ...state.sublist(existingDrugIndex + 1),
       ];
+    } else {
+      state = [...state, drug.copyWith(amount: newAmount)];
     }
   }
 
   void removeDrug(Drug drug) {
-    state = state.where((d) => d == drug).toList();
+    state = state.where((d) => d != drug).toList();
   }
 
   void clearSelectedDrugs() {
     state = [];
+  }
+
+  int getDrugAmount(Drug drug) {
+    final drugIndex = state.indexOf(drug);
+    return state[drugIndex].amount;
   }
 }

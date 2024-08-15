@@ -27,7 +27,7 @@ class _QuantityCustomizerState extends ConsumerState<QuantityCustomizer> {
 
   void _onChangedDebounced() {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    _debounce = Timer(const Duration(milliseconds: 300), () {
       ref.read(selectedDrugsProvider.notifier).updateDrugAmount(widget.drug, amount.toInt());
       print(amount);
     });
@@ -66,6 +66,7 @@ class _QuantityCustomizerState extends ConsumerState<QuantityCustomizer> {
               Expanded(
                 flex: 5,
                 child: Slider(
+                  divisions: 10,
                   value: amount,
                   min: widget.drug.minAmount.toDouble(),
                   max: widget.drug.maxAmount?.toDouble() ?? 100,
@@ -82,7 +83,7 @@ class _QuantityCustomizerState extends ConsumerState<QuantityCustomizer> {
                 child: TextField(
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: widget.drug.amount.toString(),
+                    hintText: amount.toInt().toString(),
                     hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(),
                   ),
                   keyboardType: TextInputType.number,

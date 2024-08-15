@@ -183,16 +183,13 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                                     Expanded(
                                       child: EditQuantityButton(
                                         onPressed: () {
-                                          if (showQuantity == index) {
-                                            setState(() {
+                                          setState(() {
+                                            if (showQuantity == index) {
                                               showQuantity = null;
-                                            });
-                                          } else {
-                                            setState(() {
+                                            } else {
                                               showQuantity = index;
-                                            });
-                                          }
-                                          print("PRESSED $showQuantity");
+                                            }
+                                          });
                                         },
                                       ),
                                     ),
@@ -220,37 +217,42 @@ class _OrderScreenState extends ConsumerState<NewOrderScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd)),
                 ),
                 onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: Text(
-                            "Are you sure you want to save this order?",
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("No")),
-                            TextButton(
-                                onPressed: () {
-                                  if (selectedDrugs.isNotEmpty) {
+                  if (selectedDrugs.isNotEmpty) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text(
+                              "Are you sure you want to save this order?",
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("No")),
+                              TextButton(
+                                  onPressed: () {
                                     ref
                                         .read(orderHistoryListProvider.notifier)
                                         .addDrugOrder(DateTime.now(), selectedDrugs);
                                     ref.read(selectedDrugsProvider.notifier).clearSelectedDrugs();
-                                  }
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                    content: Text("Order Saved Successfully"),
-                                  ));
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Yes")),
-                          ],
-                        );
-                      });
+
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                      content: Text("Order Saved Successfully"),
+                                    ));
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Yes")),
+                            ],
+                          );
+                        });
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Please Add at least one item."),
+                    ));
+                  }
                 },
                 child: const Text("Save Order"),
               ),

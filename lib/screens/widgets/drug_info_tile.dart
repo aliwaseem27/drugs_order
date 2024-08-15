@@ -1,4 +1,6 @@
+import 'package:drugs_order/providers/drug_list_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/drug.dart';
 import '../../utils/app_sizes.dart';
@@ -47,14 +49,21 @@ class DrugInfoTile extends StatelessWidget {
                     drug.name,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  Row(
-                    children: [
-                      const Text("Qty: "),
-                      Text(
-                        drug.amount.toString(),
-                      ),
-                    ],
-                  ),
+                  isSelected
+                      ? Consumer(
+                          builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                            var amount = ref.watch(selectedDrugsProvider.notifier).getDrugAmount(drug);
+                            return Row(
+                              children: [
+                                const Text("Qty: "),
+                                Text(
+                                  amount.toString(),
+                                ),
+                              ],
+                            );
+                          },
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),
