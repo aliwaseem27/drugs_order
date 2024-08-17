@@ -48,14 +48,33 @@ class HomeScreen extends ConsumerWidget {
                           itemBuilder: (context, index) {
                             final drug = data.drugs.elementAt(index);
                             return Card(
-                              child: ListTile(
-                                dense: true,
-                                leading: Text(index.toString()),
-                                title: Text(
-                                  drug.drugName,
-                                  style: Theme.of(context).textTheme.titleMedium,
-                                ),
-                                trailing: Text("Amount: ${drug.selectedAmount}"),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 8,
+                                    child: ListTile(
+                                      dense: true,
+                                      leading: Text(index.toString()),
+                                      title: Text(
+                                        drug.drugName,
+                                        style: Theme.of(context).textTheme.titleMedium,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.only(right: AppSizes.sm),
+                                      child: Text(
+                                        "${drug.selectedAmount}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(fontWeight: FontWeight.bold, color: Colors.blue),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             );
                           },
