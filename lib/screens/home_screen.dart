@@ -62,6 +62,7 @@ class HomeScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   Expanded(
+                                    flex: 2,
                                     child: Container(
                                       alignment: Alignment.center,
                                       padding: EdgeInsets.only(right: AppSizes.sm),
