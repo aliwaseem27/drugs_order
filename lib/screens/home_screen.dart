@@ -54,7 +54,7 @@ class HomeScreen extends ConsumerWidget {
                                     flex: 8,
                                     child: ListTile(
                                       dense: true,
-                                      leading: Text(index.toString()),
+                                      leading: Text("${index+1}"),
                                       title: Text(
                                         drug.drugName,
                                         style: Theme.of(context).textTheme.titleMedium,
