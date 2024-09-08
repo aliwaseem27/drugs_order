@@ -54,7 +54,7 @@ const DrugSchema = CollectionSchema(
   getId: _drugGetId,
   getLinks: _drugGetLinks,
   attach: _drugAttach,
-  version: '3.1.0',
+  version: '3.1.0+1',
 );
 
 int _drugEstimateSize(

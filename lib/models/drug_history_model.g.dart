@@ -41,7 +41,7 @@ const OrderHistorySchema = CollectionSchema(
   getId: _orderHistoryGetId,
   getLinks: _orderHistoryGetLinks,
   attach: _orderHistoryAttach,
-  version: '3.1.0',
+  version: '3.1.0+1',
 );
 
 int _orderHistoryEstimateSize(
@@ -459,7 +459,7 @@ const SelectedDrugSchema = CollectionSchema(
   getId: _selectedDrugGetId,
   getLinks: _selectedDrugGetLinks,
   attach: _selectedDrugAttach,
-  version: '3.1.0',
+  version: '3.1.0+1',
 );
 
 int _selectedDrugEstimateSize(
